@@ -2,18 +2,18 @@ class Config(object):
     LOGGER = True
 
     # Get this value from my.telegram.org/apps
-    OWNER_ID = "6765826972"
-    sudo_users = "6845325416", "6765826972"
-    GROUP_ID = -1002133191051
-    TOKEN = "6707490163:AAHZzqjm3rbEZsObRiNaT7DMtw_i5WPo_0o"
-    mongo_url = "mongodb+srv://HaremDBBot:ThisIsPasswordForHaremDB@haremdb.swzjngj.mongodb.net/?retryWrites=true&w=majority"
+    OWNER_ID = "6138142369"
+    sudo_users = "6018803920"
+    GROUP_ID = -1002392274240
+    TOKEN = "7045334311:AAG4H2ErRsWPQoHiIN6YEQSdKHiFM53zFew"
+    mongo_url = "mongodb+srv://manasmishra6000:manas@#123@cluster0.ocpf5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0y"
     PHOTO_URL = ["https://telegra.ph/file/b925c3985f0f325e62e17.jpg", "https://telegra.ph/file/4211fb191383d895dab9d.jpg"]
     SUPPORT_CHAT = "Collect_em_support"
     UPDATE_CHAT = "Collect_em_support"
     BOT_USERNAME = "Collect_Em_AllBot"
     CHARA_CHANNEL_ID = "-1002133191051"
-    api_id = 26626068
-    api_hash = "bf423698bcbe33cfd58b11c78c42caa2"
+    api_id = 29348525
+    api_hash = "d815eb5b92d9ba6e35c45fa4a85db492"
 
     
 class Production(Config):
