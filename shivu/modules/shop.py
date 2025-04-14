@@ -39,6 +39,17 @@ async def handle_rarity_click(update: Update, context: CallbackContext):
         parse_mode="Markdown"
     )
 
+# /buy command
+async def buy(update: Update, context: CallbackContext):
+    args = context.args
+    if not args:
+        await update.message.reply_text("Usage: /buy <id>")
+        return
+    waifu_id = args[0]
+    # Replace this with actual purchase logic if needed
+    await update.message.reply_text(f"You bought waifu with ID: {waifu_id}")
+
 # Register handlers
 application.add_handler(CommandHandler("shop", shop))
 application.add_handler(CallbackQueryHandler(handle_rarity_click, pattern=r"^rarity_\d+$"))
+application.add_handler(CommandHandler("buy", buy))
