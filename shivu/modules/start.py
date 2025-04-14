@@ -1,113 +1,105 @@
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext
+from shivu import application
 import random
-from html import escape 
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
+# GIF Lists
+GIF_PM = [
+    "https://media0.giphy.com/media/BfevCgt1YxDTW/giphy.gif",
+    "https://media4.giphy.com/media/6sv3Z8wXzyEzC/giphy.gif",
+    "https://media4.giphy.com/media/5D8fDjKyQfuZW/giphy.gif"
+]
 
-from shivu import application, PHOTO_URL, SUPPORT_CHAT, UPDATE_CHAT, BOT_USERNAME, db, GROUP_ID
-from shivu import pm_users as collection 
+GIF_GC = [
+    "https://media2.giphy.com/media/HXN6ZE2FbnH44/giphy.gif",
+    "https://media1.giphy.com/media/bJ0TSiVhirmlG/giphy.gif",
+    "https://media0.giphy.com/media/8SEnoMhrEeBDa/giphy.gif"
+]
 
+BUTTONS = [
+    [InlineKeyboardButton("ADD ME", url="http://t.me/Daddy_Madara_WaifuBot?startgroup=new")],
+    [InlineKeyboardButton("SUPPORT", url="https://t.me/Anime_Circle_Club"),
+     InlineKeyboardButton("UPDATES", url="https://t.me/+vDcCB_w1fxw1YTll")],
+    [InlineKeyboardButton("HELP", callback_data="help_msg")],
+    [InlineKeyboardButton("SOURCE", url="https://github.com/MyNameIsShekhar/WAIFU-HUSBANDO-CATCHER")]
+]
 
-async def start(update: Update, context: CallbackContext) -> None:
-    user_id = update.effective_user.id
-    first_name = update.effective_user.first_name
-    username = update.effective_user.username
+# /start command
+async def start(update: Update, context: CallbackContext):
+    if update.effective_chat.type == "private":
+        gif = random.choice(GIF_PM)
+        caption = """
+✨ *Summoning Jutsu Activated!* ✨  
+I’m not just a bot...  
+*I’m the gatekeeper to your legendary Harem.*
 
-    user_data = await collection.find_one({"_id": user_id})
+*Here’s what I do:*  
+— After every *100 messages* in your group  
+— I drop a *random anime character*  
+— First to use */guess* wins them  
+— Build your collection with */harem*, */top*, and more
 
-    if user_data is None:
-        
-        await collection.insert_one({"_id": user_id, "first_name": first_name, "username": username})
-        
-        await context.bot.send_message(chat_id=GROUP_ID, 
-                                       text=f"New user Started The Bot..\n User: <a href='tg://user?id={user_id}'>{escape(first_name)})</a>", 
-                                       parse_mode='HTML')
+*This isn’t just a game —*  
+*This is your rise to becoming the Harem King/Queen.*
+
+So what now?  
+Just one click...  
+*Unleash the madness. Rule the waifu world.*
+
+[ + ] *Add Me To Your Group*  
+Let the hunt begin!
+"""
+        await update.message.reply_animation(animation=gif, caption=caption, reply_markup=InlineKeyboardMarkup(BUTTONS), parse_mode='Markdown')
     else:
-        
-        if user_data['first_name'] != first_name or user_data['username'] != username:
-            
-            await collection.update_one({"_id": user_id}, {"$set": {"first_name": first_name, "username": username}})
+        await update.message.reply_text("🎴Alive!?... Connect to me in PM for more information.")
 
-    
-
-    if update.effective_chat.type== "private":
-        
-        
-        caption = f"""
-        ***Heyyyy...***
-
-***I am An Open Source Character Catcher Bot...​Add Me in Your group.. And I will send Random Characters After.. every 100 messages in Group... Use /guess to.. Collect that Characters in Your Collection.. and see Collection by using /Harem... So add in Your groups and Collect Your harem***
-        """
-        
-        keyboard = [
-            [InlineKeyboardButton("ADD ME", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
-            [InlineKeyboardButton("SUPPORT", url=f'https://t.me/{SUPPORT_CHAT}'),
-            InlineKeyboardButton("UPDATES", url=f'https://t.me/{UPDATE_CHAT}')],
-            [InlineKeyboardButton("HELP", callback_data='help')],
-            [InlineKeyboardButton("SOURCE", url=f'https://github.com/MyNameIsShekhar/WAIFU-HUSBANDO-CATCHER')]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        photo_url = random.choice(PHOTO_URL)
-
-        await context.bot.send_photo(chat_id=update.effective_chat.id, photo=photo_url, caption=caption, reply_markup=reply_markup, parse_mode='markdown')
-
-    else:
-        photo_url = random.choice(PHOTO_URL)
-        keyboard = [
-            [InlineKeyboardButton("ADD ME", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
-            [InlineKeyboardButton("SUPPORT", url=f'https://t.me/{SUPPORT_CHAT}'),
-            InlineKeyboardButton("UPDATES", url=f'https://t.me/{UPDATE_CHAT}')],
-            [InlineKeyboardButton("HELP", callback_data='help')],
-            [InlineKeyboardButton("SOURCE", url=f'https://github.com/MyNameIsShekhar/WAIFU-HUSBANDO-CATCHER')]
-        ]
-        
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await context.bot.send_photo(chat_id=update.effective_chat.id, photo=photo_url, caption="🎴Alive!?... \n connect to me in PM For more information ",reply_markup=reply_markup )
-
-async def button(update: Update, context: CallbackContext) -> None:
+# HELP Callback
+async def help_callback(update: Update, context: CallbackContext):
     query = update.callback_query
     await query.answer()
 
-    if query.data == 'help':
-        help_text = """
-    ***Help Section:***
-    
-***/guess: To Guess character (only works in group)***
-***/fav: Add Your fav***
-***/trade : To trade Characters***
-***/gift: Give any Character from Your Collection to another user.. (only works in groups)***
-***/collection: To see Your Collection***
-***/topgroups : See Top Groups.. Ppl Guesses Most in that Groups***
-***/top: Too See Top Users***
-***/ctop : Your ChatTop***
-***/changetime: Change Character appear time (only works in Groups)***
-   """
-        help_keyboard = [[InlineKeyboardButton("⤾ Bᴀᴄᴋ", callback_data='back')]]
-        reply_markup = InlineKeyboardMarkup(help_keyboard)
-        
-        await context.bot.edit_message_caption(chat_id=update.effective_chat.id, message_id=query.message.message_id, caption=help_text, reply_markup=reply_markup, parse_mode='markdown')
+    text = (
+        "Yo loser,\n\n"
+        "I ain't your average Husbando bot, alright?\n"
+        "I drop the Over Powered multiverse characters every 100 messages — and if you're slow, someone else snatches your Husbando. Cry later.\n\n"
+        "Wanna build a legacy? Use /guess fast, flex with /harem, dominate the Husbando world.\n\n"
+        "This ain't no kiddie game. This is your Harem. Your pride. Your obsession.\n\n"
+        "So add me to your damn group and let the madness begin.\n"
+        "You in, or still simping For These Korean 7 Gays?"
+    )
 
-    elif query.data == 'back':
+    keyboard = [[InlineKeyboardButton("BACK", callback_data="back_start")]]
+    await query.edit_message_caption(caption=text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
 
-        caption = f"""
-        ***Hoyyyy...*** ✨
+# BACK to START message
+async def back_to_start(update: Update, context: CallbackContext):
+    query = update.callback_query
+    await query.answer()
 
-***I am An Open Source Character Catcher Bot..​Add Me in Your group.. And I will send Random Characters After.. every 100 messages in Group... Use /guess to.. Collect that Characters in Your Collection.. and see Collection by using /Harem... So add in Your groups and Collect Your harem***
-        """
+    caption = """
+✨ *Summoning Jutsu Activated!* ✨  
+I’m not just a bot...  
+*I’m the gatekeeper to your legendary Harem.*
 
-        
-        keyboard = [
-            [InlineKeyboardButton("ADD ME", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
-            [InlineKeyboardButton("SUPPORT", url=f'https://t.me/{SUPPORT_CHAT}'),
-            InlineKeyboardButton("UPDATES", url=f'https://t.me/{UPDATE_CHAT}')],
-            [InlineKeyboardButton("HELP", callback_data='help')],
-            [InlineKeyboardButton("SOURCE", url=f'https://github.com/MyNameIsShekhar/WAIFU-HUSBANDO-CATCHER')]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
+*Here’s what I do:*  
+— After every *100 messages* in your group  
+— I drop a *random anime character*  
+— First to use */guess* wins them  
+— Build your collection with */harem*, */top*, and more
 
-        await context.bot.edit_message_caption(chat_id=update.effective_chat.id, message_id=query.message.message_id, caption=caption, reply_markup=reply_markup, parse_mode='markdown')
+*This isn’t just a game —*  
+*This is your rise to becoming the Harem King/Queen.*
 
+So what now?  
+Just one click...  
+*Unleash the madness. Rule the waifu world.*
 
-application.add_handler(CallbackQueryHandler(button, pattern='^help$|^back$', block=False))
-start_handler = CommandHandler('start', start, block=False)
-application.add_handler(start_handler)
+[ + ] *Add Me To Your Group*  
+Let the hunt begin!
+"""
+    await query.edit_message_caption(caption=caption, reply_markup=InlineKeyboardMarkup(BUTTONS), parse_mode='Markdown')
+
+# Register
+application.add_handler(CommandHandler("start", start, block=False))
+application.add_handler(CallbackQueryHandler(help_callback, pattern="help_msg"))
+application.add_handler(CallbackQueryHandler(back_to_start, pattern="back_start"))
