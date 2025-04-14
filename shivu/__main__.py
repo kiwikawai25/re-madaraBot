@@ -13,7 +13,7 @@ from shivu import (
     user_collection, user_totals_collection, shivuu, application,
     SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER
 )
-from shivu.modules import ALL_MODULES
+from shivu.modules import ALL_MODULES, shop
 
 locks = {}
 message_counters = {}
@@ -199,6 +199,15 @@ def main() -> None:
     application.add_handler(CommandHandler(["guess", "protecc", "collect", "grab", "hunt"], guess, block=False))
     application.add_handler(CommandHandler("fav", fav, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
+
+    # Shop related commands registered here
+    application.add_handler(CommandHandler("shop", shop.shop))
+    application.add_handler(CommandHandler("buy", shop.buy))
+    application.add_handler(CommandHandler("bal", shop.bal))
+    application.add_handler(CommandHandler("gen", shop.gen))
+    application.add_handler(CommandHandler("dgen", shop.dgen))
+    application.add_handler(CommandHandler("sell", shop.sell))
+    application.add_handler(CommandHandler("redeem", shop.redeem))
 
     application.run_polling(drop_pending_updates=True)
 
