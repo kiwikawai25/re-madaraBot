@@ -14,3 +14,6 @@ used_codes = set()
 
 # Keeps timestamps of /gen usage for cooldowns (24h limit and 5h gap logic)
 cooldowns = {}
+
+# Track last sell command time per user to prevent spamming
+last_sell_time = {}
