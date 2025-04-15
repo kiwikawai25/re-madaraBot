@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext
 from shivu import application, user_collection
-from shivu.modules.storage import user_balances
+from shivu.modules.storage import user_balances  # Yeh line add ki gayi hai
 
 async def bal(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
@@ -12,7 +12,7 @@ async def bal(update: Update, context: CallbackContext):
 
     # If storage has updated value (overwritten), show that
     if user_id in user_balances:
-        balance = user_balances[user_id]
+        balance = user_balances[user_id]  # Yeh block bhi add kiya gaya hai
 
     await update.message.reply_text(f"Your WaifuCoin balance: ₹{balance}")
 
