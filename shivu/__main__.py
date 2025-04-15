@@ -13,7 +13,7 @@ from shivu import (
     user_collection, user_totals_collection, shivuu, application,
     SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER
 )
-from shivu.modules import ALL_MODULES, shop
+from shivu.modules import ALL_MODULES, shop, bal
 
 locks = {}
 message_counters = {}
