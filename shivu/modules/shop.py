@@ -56,8 +56,14 @@ async def bal(update: Update, context: CallbackContext):
     balance = 1000
     await update.message.reply_text(f"Your current balance is ₹{balance}")
 
+# /gen command
+async def gen(update: Update, context: CallbackContext):
+    # Placeholder random waifu
+    await update.message.reply_text("Random waifu generated! (This is a placeholder)")
+
 # Register handlers
 application.add_handler(CommandHandler("shop", shop))
 application.add_handler(CallbackQueryHandler(handle_rarity_click, pattern=r"^rarity_\d+$"))
 application.add_handler(CommandHandler("buy", buy))
 application.add_handler(CommandHandler("bal", bal))
+application.add_handler(CommandHandler("gen", gen))
