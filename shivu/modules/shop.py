@@ -49,7 +49,15 @@ async def buy(update: Update, context: CallbackContext):
     # Replace this with actual purchase logic if needed
     await update.message.reply_text(f"You bought waifu with ID: {waifu_id}")
 
+# /bal command
+async def bal(update: Update, context: CallbackContext):
+    user_id = update.effective_user.id
+    # Dummy balance for now
+    balance = 1000
+    await update.message.reply_text(f"Your current balance is ₹{balance}")
+
 # Register handlers
 application.add_handler(CommandHandler("shop", shop))
 application.add_handler(CallbackQueryHandler(handle_rarity_click, pattern=r"^rarity_\d+$"))
 application.add_handler(CommandHandler("buy", buy))
+application.add_handler(CommandHandler("bal", bal))
