@@ -58,7 +58,6 @@ async def bal(update: Update, context: CallbackContext):
 
 # /gen command
 async def gen(update: Update, context: CallbackContext):
-    # Placeholder random waifu
     await update.message.reply_text("Random waifu generated! (This is a placeholder)")
 
 # /dgen command
@@ -72,3 +71,7 @@ application.add_handler(CommandHandler("buy", buy))
 application.add_handler(CommandHandler("bal", bal))
 application.add_handler(CommandHandler("gen", gen))
 application.add_handler(CommandHandler("dgen", dgen))
+
+# Start the bot
+if __name__ == "__main__":
+    application.run_polling()
