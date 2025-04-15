@@ -200,7 +200,7 @@ def main() -> None:
     application.add_handler(CommandHandler("fav", fav, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
 
-    # Shop related commands registered here
+    # Shop-related commands
     application.add_handler(CommandHandler("shop", shop.shop))
     application.add_handler(CommandHandler("buy", shop.buy))
     application.add_handler(CommandHandler("bal", shop.bal))
