@@ -1,10 +1,10 @@
 from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext
 from shivu import application, user_collection
+from shivu.modules.storage import cooldowns, generated_codes
+
 import random
 from datetime import datetime, timedelta
-
-cooldowns = {}
 
 def generate_code(length=6):
     return ''.join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", k=length))
@@ -28,8 +28,11 @@ async def gen(update: Update, context: CallbackContext):
             )
             return
 
-    # Generate code and add balance
+    # Generate code and store it
     code = generate_code()
+    generated_codes[user_id] = generated_codes.get(user_id, []) + [code]
+
+    # Add balance
     await user_collection.update_one(
         {'id': user_id},
         {'$inc': {'balance': 400}},
