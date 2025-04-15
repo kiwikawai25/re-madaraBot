@@ -159,7 +159,7 @@ def main() -> None:
     application.add_handler(CommandHandler("update", upload.update))
 
     application.add_handler(CommandHandler("trade", trade.trade))
-    application.add_handler(CommandHandler("accept", trade.accept))
+    # application.add_handler(CommandHandler("accept", trade.accept))  # removed due to AttributeError
     application.add_handler(CommandHandler("decline", trade.decline))
 
     application.add_handler(CommandHandler("start", start.start))
